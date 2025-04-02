@@ -1,15 +1,24 @@
-import React from 'react'
-import { useAccordionContext } from './Accordion'
+import React, { createContext, useContext } from 'react';
 
-const AccordionItem = ({ className, children }) => {
+const AccordionItemContext = createContext();
 
+export const useAccordionItemContext = () => {
+    const ctx = useContext(AccordionItemContext);
 
+    if (!ctx) {
+        throw new Error('AccordionItem-related components must be wrapped by <Accordion.Item>');
+    }
+    return ctx;
+};
 
+const AccordionItem = ({ id, className, children }) => {
     return (
-        <li className={className}>
-            {children}
-        </li>
-    )
-}
+        <AccordionItemContext.Provider value={id}>
+            <li className={className}>
+                {children}
+            </li>
+        </AccordionItemContext.Provider>
+    );
+};
 
-export default AccordionItem
+export default AccordionItem;
